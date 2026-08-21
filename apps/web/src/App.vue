@@ -1,1 +1,54 @@
-<script setup lang="ts">import{onMounted,onUnmounted}from'vue';import{useDeploymentsStore}from'./stores/deployments';const store=useDeploymentsStore();let disconnect:undefined|(()=>void);onMounted(async()=>{await store.load();disconnect=store.connect()});onUnmounted(()=>disconnect?.())</script><template><div class="layout"><aside><div class="logo">RP</div><h2>ReleasePulse</h2><nav><b>Overview</b><span>Deployments</span><span>Services</span><span>Incidents</span></nav><div class="conn">{{store.connected?'● Live updates':'○ Reconnecting'}}</div></aside><main><header><div><small>ENGINEERING OPERATIONS</small><h1>Release control center</h1><p>One view for deployments, environments and service health.</p></div></header><section class="metrics"><article><span>Success rate</span><strong>{{store.successRate}}%</strong></article><article><span>Live stream</span><strong>{{store.connected?'Online':'Retrying'}}</strong></article><article><span>Production gate</span><strong>Approval</strong></article><article><span>Transport</span><strong>SSE</strong></article></section><section class="panel"><div class="head"><div><h2>Recent deployments</h2><p>Server-authoritative deployment activity</p></div></div><p v-if="store.error" class="warn">{{store.error}}</p><table><thead><tr><th>Service</th><th>Version</th><th>Environment</th><th>Status</th><th>Commit</th><th>Requested by</th><th></th></tr></thead><tbody><tr v-for="d in store.items" :key="d.id"><td><strong>{{d.service}}</strong></td><td>{{d.version}}</td><td>{{d.environment}}</td><td>{{d.status.replace('_',' ')}}</td><td><code>{{d.commitSha}}</code></td><td>{{d.requestedBy}}</td><td><button v-if="d.status==='awaiting_approval'" @click="store.approve(d.id)">Approve</button></td></tr></tbody></table></section></main></div></template>
+<script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue';
+import { useDeploymentsStore } from './stores/deployments';
+
+const store = useDeploymentsStore();
+let disconnect: (() => void) | undefined;
+
+onMounted(async () => {
+  await store.load();
+  disconnect = store.connect();
+});
+
+onUnmounted(() => disconnect?.());
+</script>
+
+<template>
+  <div class="layout">
+    <aside>
+      <div class="logo">RP</div>
+      <h2>ReleasePulse</h2>
+      <nav><b>Overview</b><span>Deployments</span><span>Services</span><span>Incidents</span></nav>
+      <div class="conn">{{ store.connected ? '● Live updates' : '○ Reconnecting' }}</div>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <small>ENGINEERING OPERATIONS</small>
+          <h1>Release control center</h1>
+          <p>One view for deployments, environments and service health.</p>
+        </div>
+      </header>
+      <section class="metrics">
+        <article><span>Success rate</span><strong>{{ store.successRate }}%</strong></article>
+        <article><span>Live stream</span><strong>{{ store.connected ? 'Online' : 'Retrying' }}</strong></article>
+        <article><span>Production gate</span><strong>Approval</strong></article>
+        <article><span>Transport</span><strong>SSE</strong></article>
+      </section>
+      <section class="panel">
+        <div class="head"><div><h2>Recent deployments</h2><p>Server-authoritative deployment activity</p></div></div>
+        <p v-if="store.error" class="warn">{{ store.error }}</p>
+        <table>
+          <thead><tr><th>Service</th><th>Version</th><th>Environment</th><th>Status</th><th>Commit</th><th>Requested by</th><th></th></tr></thead>
+          <tbody>
+            <tr v-for="d in store.items" :key="d.id">
+              <td><strong>{{ d.service }}</strong></td><td>{{ d.version }}</td><td>{{ d.environment }}</td>
+              <td>{{ d.status.replace('_', ' ') }}</td><td><code>{{ d.commitSha }}</code></td><td>{{ d.requestedBy }}</td>
+              <td><button v-if="d.status === 'awaiting_approval'" @click="store.approve(d.id)">Approve</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</template>
