@@ -1,0 +1,1 @@
+import type{Deployment,DeploymentStatus,EnvironmentName}from'../domain/deployment.js';export interface DeploymentRepository{list(environment?:EnvironmentName,status?:DeploymentStatus):Promise<Deployment[]>;get(id:string):Promise<Deployment|undefined>;add(item:Deployment):Promise<Deployment>;update(item:Deployment):Promise<Deployment>}

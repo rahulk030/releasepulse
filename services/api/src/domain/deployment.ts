@@ -1,0 +1,1 @@
+export type EnvironmentName='development'|'staging'|'production';export type DeploymentStatus='running'|'succeeded'|'failed'|'awaiting_approval';export interface Deployment{id:string;service:string;version:string;environment:EnvironmentName;status:DeploymentStatus;commitSha:string;requestedBy:string;createdAt:string;completedAt?:string}

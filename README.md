@@ -13,7 +13,7 @@ A deployment and service-health control center for engineering teams. ReleasePul
 
 ## Stack
 
-- **Frontend:** Vue 3, TypeScript, Pinia, Vue Router
+- **Frontend:** Vue 3, TypeScript, Pinia
 - **Backend:** Node.js, TypeScript, Express
 - **Database:** PostgreSQL
 - **Realtime:** Server-Sent Events
