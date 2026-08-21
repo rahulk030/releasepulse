@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: releasepulse
+      POSTGRES_USER: releasepulse
+      POSTGRES_PASSWORD: releasepulse_dev
+    ports: ["5433:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U releasepulse"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
