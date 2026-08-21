@@ -2,6 +2,12 @@
 
 A deployment and service-health control center for engineering teams. ReleasePulse brings environment status, recent deployments, approvals, and live operational events into one place instead of spreading them across CI logs and chat messages.
 
+## Live demo
+
+**[Open ReleasePulse →](https://rahulk030.github.io/releasepulse/)**
+
+The public GitHub Pages version runs in a browser-only portfolio demo mode with representative deployment data, approval actions, status changes, and simulated live updates. The repository also contains the full Node.js/PostgreSQL implementation for local development.
+
 ## Highlights
 
 - Tracks releases across development, staging, and production environments.
